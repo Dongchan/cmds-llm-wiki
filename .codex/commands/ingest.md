@@ -114,6 +114,10 @@ For high-confidence or synthesis-heavy claims, add a bias check callout:
 > Data gap: ...
 ```
 
+### Step 3.5: Persona Accumulation (v6.3)
+
+If the source's author or primary speaker matches an existing persona card in `20. Wiki/26. Personas/`, append verbatim quotes (grep-verifiable against `## Original Content`), a dated Position Timeline row, and an Accumulation Log line, then add the raw source to `source`. Never create a new persona card during ingest (user-nominated only) and never change `personaMaturity`. GitHub `## Original Content` must come from `raw.githubusercontent.com/{owner}/{repo}/{sha}/…`, never a rendered-page scrape. Details: `.claude/commands/ingest.md` Step 3.5.
+
 ### Step 4: Connect
 
 Add `[[wikilinks]]`, update relevant MOCs, and avoid orphan pages.

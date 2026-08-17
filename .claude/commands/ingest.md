@@ -271,6 +271,19 @@ For each extracted topic/entity/guide, either **update** an existing page or **c
 	> Data gap: ...
 	```
 
+### Step 3.5: Persona Accumulation (v6.3)
+
+If the source's **author or primary speaker** matches an existing persona card in `20. Wiki/26. Personas/`, append to that card:
+
+1. **Quote Bank**: 1~3 verbatim quotes (must be grep-verifiable against the Raw Source `## Original Content`), each as `> [!quote] {topic} ({date}, [[raw source]])`.
+2. **Position Timeline**: one dated row if the source states or shifts a position. If it contradicts an existing position, keep both and add `> [!warning] Contradiction`.
+3. **Accumulation Log**: one dated line — `- {YYYY-MM-DD} · [[raw source]] → {what was added}`.
+4. **frontmatter**: add the raw source to `source`, update `date modified`. Do NOT change `personaMaturity` (promotion is `/verify`- or user-gated).
+
+**Never create a new persona card during ingest** — persona creation is user-nominated only (same gate as domain expansion).
+
+**Capture-fidelity rule (GitHub sources)**: for `## Original Content` of a GitHub file (README etc.), fetch the **raw file at a pinned commit** (`raw.githubusercontent.com/{owner}/{repo}/{sha}/…`) — never a rendered-page HTML→Markdown scrape. Scrape signatures that fail verbatim fidelity: headings merged with following text, missing code fences, escaped underscores, `camo.githubusercontent.com` URLs.
+
 ### Step 4: Connect
 
 - Add `[[wikilinks]]` between all related pages

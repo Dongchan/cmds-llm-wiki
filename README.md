@@ -152,7 +152,8 @@ cmds-llm-wiki/
 │   ├── 22. Entities/            # 예시 (Karpathy, Bush, Memex)
 │   ├── 23. Guides/              # 예시 가이드
 │   ├── 24. Maps/                # 예시 MOC
-│   └── 25. Questions/           # Research Question 카드 (빈 폴더, RQ-{slug}.md)
+│   ├── 25. Questions/           # Research Question 카드 (빈 폴더, RQ-{slug}.md)
+│   └── 26. Personas/            # 실존 인물 페르소나 카드 (빈 폴더, Persona-{Entity}.md, v6.3)
 ├── 30. Queries/                 # 합성된 질의 결과 + synthesis (빈 폴더, /query 결과로 채워짐)
 ├── 40. Paper Analyses/          # 논문 12단 분석 — {citekey}/ 폴더에 허브 S00 + 지식 원자 (v1.10.0+)
 ├── 80. References/Attachments/  # 모든 이미지 일원화

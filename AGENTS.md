@@ -7,13 +7,13 @@ description: "Schema and harness document for the CMDS LLM Wiki vault. Defines t
 author:
   - "[[{your-name}]]"
 date created: 2026-04-10T21:30
-date modified: 2026-07-23
+date modified: 2026-08-17
 tags:
   - system
   - schema
   - llm-wiki
 status: active
-version: "1.10.0"
+version: "1.11.0"
 ---
 
 # AGENTS.md — LLM Wiki Schema
@@ -167,11 +167,12 @@ Mothership 볼트가 없는 standalone 사용자는 이 표를 건너뛰어도 �
 ├── 22. Entities/     # 사람, 조직, 제품 (OpenAI, Karpathy, GPT-4, ...)
 ├── 23. Guides/       # How-to, 튜토리얼, 실전 가이드
 ├── 24. Maps/         # MOC (Map of Content), 주제별 인덱스
-└── 25. Questions/    # Research Question — 1급 연구 질문 카드 (v6.1)
+├── 25. Questions/    # Research Question — 1급 연구 질문 카드 (v6.1)
+└── 26. Personas/     # Persona — 실존 인물의 사고·발화 컴파일 (v6.3, perspective-taking 층)
 ```
 
 **규칙**:
-- `21~24` 페이지는 `type: wiki-page`, `25. Questions` 카드는 `type: research-question` frontmatter 사용
+- `21~24` 페이지는 `type: wiki-page`, `25. Questions` 카드는 `type: research-question`, `26. Personas` 카드는 `type: persona` frontmatter 사용
 - 관련 Raw Source를 `source` 프로퍼티로 역참조
 - 모든 주장에 출처 명시 (Wiki 내 링크 또는 Raw Source 참조)
 - Cross-reference: 관련 개념은 반드시 `[[wikilink]]`로 연결
@@ -260,6 +261,7 @@ Codex 에서 가능한 작업은 아래 10개 operation 으로 표준화한다. 
 3. **컴파일**: 관련 Wiki 페이지 10~15개를 incremental update
    - 기존 페이지가 있으면 → 새 정보 추가/업데이트
    - 새 개념이면 → 새 Wiki 페이지 생성
+3-a. **페르소나 누적 (v6.3)**: 소스의 저자 또는 핵심 발화 주체가 `26. Personas/` 의 기존 페르소나와 일치하면, 해당 카드의 Quote Bank(verbatim)·Position Timeline·Accumulation Log 에 append. **새 페르소나 신설은 하지 않는다** — 사용자 지목 시에만.
 4. **연결**: cross-reference 링크 추가, MOC 업데이트. Wiki 페이지에도 `mainVaultRelated` 프로퍼티로 모선 링크 유지.
 5. **로그**: `log.md`에 ingest 기록 추가 — `collectionPurpose` 한 줄 포함.
 6. **인덱스**: `index.md` 업데이트 (필요 시)
@@ -368,7 +370,8 @@ CMDS_LLM_Wiki/
 │   ├── 22. Entities/
 │   ├── 23. Guides/
 │   ├── 24. Maps/
-│   └── 25. Questions/      # Research Question 카드 (RQ-{slug}.md)
+│   ├── 25. Questions/      # Research Question 카드 (RQ-{slug}.md)
+│   └── 26. Personas/       # Persona 카드 (Persona-{Entity}.md, v6.3)
 ├── 30. Queries/            # 합성된 질의 결과 (+ synthesis)
 ├── 40. Paper Analyses/     # 논문별 12단 분석 (folder = {citekey}/) — 허브 S00 + 원자 S02~S12 (v6.2)
 ├── 70. Outputs/            # (옵션) 외부 도구 산출물 (Layer 4: tool outputs)
@@ -408,7 +411,7 @@ CMDS_LLM_Wiki/
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `type` | text | 노트 유형: `documentation`, `raw-source`, `wiki-page`, `research-question` (v6.1), `query-result`, `synthesis` (v6.1), `moc`, `inbox` (capture 단계 pre-ingest), `paper-hub` (v6.2 — 논문 허브), `paper-analysis` (v6.2 — 논문 원자), `log` |
+| `type` | text | 노트 유형: `documentation`, `raw-source`, `wiki-page`, `research-question` (v6.1), `query-result`, `synthesis` (v6.1), `moc`, `inbox` (capture 단계 pre-ingest), `paper-hub` (v6.2 — 논문 허브), `paper-analysis` (v6.2 — 논문 원자), `persona` (v6.3 — 실존 인물 페르소나 층), `log` |
 | `aliases` | list | 대체 이름 |
 | `description` | text | English, 1-2 sentences for LLMs — **값은 항상 큰따옴표** (`description: "..."`) |
 | `author` | list | 작성자 (LLM인 경우 `Claude` / `Codex` / `Grok`) |
@@ -501,6 +504,15 @@ harness 정의 파일(`.claude/commands/*`, `.codex/commands/*`, `.agents/skills
 - `related`: 관련 RQ·concept
 - 공통 7 필수 + `explored`(기본 false). RQ 는 claim 이 아니라 질문이므로 v5 `claimType`/`verificationStatus` 대신 위 `status` 를 쓴다.
 
+**Persona** (`type: persona`, v6.3 신설 — 실존 인물 perspective-taking 층):
+- `20. Wiki/26. Personas/` 에 저장. 파일명 `Persona-{Entity Name}.md`. Entity 페이지("그가 누구인가" — 사실)와 분리된 "그가 어떻게 사고·발화하는가"(관점) 컴파일. 합성 페르소나가 아니라 **실존 인물의 검증 가능한 발화만** 근거로 한다.
+- `personaOf`: **(필수)** 대응 entity — `"[[Entity Name]]"` quoted wikilink. Entity 페이지 없이 페르소나만 만들지 않는다.
+- `personaMaturity`: **(필수)** `seed` (발화 증거 0~1건) / `developing` (2+ 소스, 인용 축적 중) / `established` (10+ 소스, 다년 Position Timeline). 승급은 `/verify` 또는 사용자 확인 시에만 — 자동 승급 금지.
+- `personaDomains`: **(필수)** 증거 기반으로 발화 가능한 도메인 목록. Simulation Boundary 와 쌍.
+- `source` / `confidence` / `explored` / v5 키는 wiki-page 와 동일하게 적용. `claimType` 은 통상 `interpretive`.
+- **필수 body 섹션**: Identity Anchor · Worldview & Core Positions · Voice & Style · Heuristics · **Quote Bank** (verbatim, Raw Source `## Original Content` 에서 grep 대조 가능) · Position Timeline · **Simulation Boundary** callout · **Accumulation Log**.
+- **운영 게이트**: ① 새 페르소나 신설은 도메인 확장과 같은 급 — **사용자가 인물을 지목했을 때만** 생성. ② 기존 페르소나로의 누적은 `/ingest` Step 3.5 에서 자동. ③ 증거 범위 밖 발화 시뮬레이션 금지 — 실존 인물 견해 날조는 인용 날조와 같은 급의 실패. ④ index 는 `MOC-Personas` 가 담당. 템플릿: `90. Settings/Templates/Template_Persona.md`.
+
 **Paper Hub** (`type: paper-hub`, v6.2 신설 — 논문 12단 분석 앵커):
 - `paperType`: **(필수)** quantitative / qualitative / theory-concept / mixed-methods / scale-development / meta-analysis
 - `citekey`: **(필수)** BetterBibTeX `authYearShorttitle` (Citation Standard). Raw Source·허브·원자 동일 토큰. Zotero 미사용 시 provisional citekey.
@@ -520,7 +532,7 @@ harness 정의 파일(`.claude/commands/*`, `.codex/commands/*`, `.agents/skills
 
 ### 새 YAML 키는 camelCase
 
-- ✅ `collectionPurpose`, `mainVaultRelated`, `mainVaultCmds`, `reusableFor`, `bookIndex`, `chapterNumber`, `chapterPart`, `chapterPrev`, `chapterNext`, `explored`, `exploredBy`, `exploredDate`, `claimType`, `evidenceScope`, `verificationStatus`, `verifiedAt`, `verifiedBy`, `disputed`, `model`, `effort`, `citekey`, `cites`, `questionType`, `feedsInto`, `evidenceFor`, `evidenceAgainst`, `sourceCallout`, `thesis`, `targetVenue`, `supports`, `counters`, `paperType`, `analysisStep`, `analysisStepName`, `paperHub`, `targetManuscript`, `doi`, `measuredConstruct`, `itemCount`
+- ✅ `collectionPurpose`, `mainVaultRelated`, `mainVaultCmds`, `reusableFor`, `bookIndex`, `chapterNumber`, `chapterPart`, `chapterPrev`, `chapterNext`, `explored`, `exploredBy`, `exploredDate`, `claimType`, `evidenceScope`, `verificationStatus`, `verifiedAt`, `verifiedBy`, `disputed`, `model`, `effort`, `citekey`, `cites`, `questionType`, `feedsInto`, `evidenceFor`, `evidenceAgainst`, `sourceCallout`, `thesis`, `targetVenue`, `supports`, `counters`, `paperType`, `analysisStep`, `analysisStepName`, `paperHub`, `targetManuscript`, `doi`, `measuredConstruct`, `itemCount`, `personaOf`, `personaMaturity`, `personaDomains`
 - ❌ `collection_purpose`, `main-vault-related`, `book_index`, `chapter-number`, `explored_by`, `claim_type`, `verification-status`, `cite_key`, `feeds_into` — camelCase 네이밍 컨벤션 위반
 
 ### Citation Standard (v6.1 — 옵션, Zotero-ready 인용 규약)
@@ -585,6 +597,7 @@ v4 Exploration Gate 가 "누가 읽었나"만 추적하던 한계를 보완 — 
 | Query Result | `YYYY-MM-DD-Q-{question}.md` | `2026-04-10-Q-How-does-RLHF-work.md` |
 | MOC | `MOC-{Topic}.md` | `MOC-Large Language Models.md` |
 | Research Question | `RQ-{slug}.md` (`20. Wiki/25. Questions/`) | `RQ-agent-memory-architecture.md` |
+| Persona | `Persona-{Entity Name}.md` (`20. Wiki/26. Personas/`) | `Persona-Andrej Karpathy.md` |
 | Paper Analysis 폴더 | `40. Paper Analyses/{citekey}/` | `40. Paper Analyses/wu2024longMemEval/` |
 | Paper Hub | `{Surname} {Year} - S00 Hub.md` | `Wu 2024 - S00 Hub.md` |
 | Paper 원자 | `{Surname} {Year} - S{NN} {세부주제}.md` | `Wu 2024 - S08 평가 지표 분석.md` |
@@ -639,6 +652,9 @@ aliases:
 > [!check] Exploration Gate
 > Status: explored / unexplored / needs-review
 > Evidence: 사용자가 읽은 근거 또는 에이전트 검증 요약
+
+> [!warning] Simulation Boundary
+> (v6.3) Persona 카드 필수 — 이 페르소나의 증거가 커버하지 않는 주제를 명시하고, 경계 밖 발화 시뮬레이션을 금지한다. 실존 인물의 견해 날조 방지 장치.
 
 > [!info] Analysis Context
 > (v6.2) Paper Analysis 원자의 자기완결 계약 — H1 직후 4행 (Paper / 수집맥락 / 위치 Step N/12 / 이 원자+인접).

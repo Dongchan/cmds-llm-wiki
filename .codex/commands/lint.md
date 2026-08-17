@@ -23,6 +23,7 @@ Follow [[AGENTS.md]] and read [[Core Context]] first. The local skill `.agents/s
 13. Check cross-vault links: `mainVaultRelated` Obsidian URLs and `mainVaultCmds` format.
 14. Check attachment paths against `80. References/Attachments/`.
 15. Check `Core Context.md` `snapshot_date` against current date and the 9 mothership system files: `CLAUDE.md`, `AGENTS.md`, `ANTIGRAVITY.md`, `CMDS.md`, `🏛 CMDS Guide.md`, `🏛 CMDS Head Quarter.md`, `BRAIN.md`, `BRAIN_PROMPT.md`, `DESIGN.md`.
+16. Check `20. Wiki/26. Personas/` health (v6.3): `personaOf` resolves, `personaMaturity` valid, Simulation Boundary + Accumulation Log present, entity-vs-persona `source` drift (accumulation backlog), and one grep-verified Quote Bank sample per persona.
 
 ## Output
 

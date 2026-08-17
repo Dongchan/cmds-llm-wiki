@@ -4,6 +4,22 @@
 
 ---
 
+## v1.11.0 — 2026-08-17 (Persona Layer — 실존 인물 perspective-taking 층)
+
+**신설 — `20. Wiki/26. Personas/` (v6.3)**:
+- `type: persona` 카드 (`Persona-{Entity Name}.md`) — Entity("그가 누구인가" = 사실)와 분리된 "그가 어떻게 사고·발화하는가"(관점) 컴파일 층. 합성 페르소나가 아니라 **실존 인물의 검증 가능한 발화만** 근거.
+- 필수 키 `personaOf`(entity 역참조) · `personaMaturity`(seed/developing/established 성숙도 사다리) · `personaDomains`. 필수 섹션: Quote Bank(Raw Source 원문과 grep 대조 가능한 verbatim만) · Position Timeline · `> [!warning] Simulation Boundary`(증거 밖 발화 시뮬레이션 금지 — 실존 인물 견해 날조 방지) · Accumulation Log.
+- `90. Settings/Templates/Template_Persona.md` 추가.
+
+**자연 누적 배선**:
+- `/ingest` Step 3.5 — 소스 저자가 기존 페르소나와 일치하면 인용·입장·로그 자동 append. **신설은 사용자 지목 게이트** (도메인 확장과 동급).
+- `/lint` persona health — dangling `personaOf` · accumulation backlog(entity 소스 대비 미수확) · Quote Bank 표본 grep 대조(불일치 = 날조급 오류).
+
+**Capture-fidelity rule (GitHub sources)**:
+- `## Original Content` 는 raw+SHA 고정 fetch (`raw.githubusercontent.com/{owner}/{repo}/{sha}/…`) 의무 — rendered-page HTML→Markdown 스크랩 금지 (헤딩 병합·코드펜스 소실·camo URL = 충실도 실패 signature).
+
+**스키마**: CLAUDE.md/AGENTS.md — persona type·frontmatter 블록·폴더 트리·naming·Simulation Boundary 콜아웃·ingest 3-a 반영.
+
 ## v1.10.0 — 2026-07-23 (Paper Ingest Mode — 12-step paper atomization)
 
 **Source**: 운영 볼트 schema v6.2 의 Paper Ingest Mode 를 sanitize 하여 이식. v1.9.0 에서 "학술 전용 버티컬이라 의도적 제외" 했던 항목을 **사용자 결정으로 포함** — RQ 카드 (v1.9.0) 와 결합해 논문 → 질문 → 논증의 전체 파이프라인이 킷 안에서 완결된다.
