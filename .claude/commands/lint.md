@@ -73,6 +73,12 @@ Check the 미래의 나에게 보내는 편지 fields introduced with [[Core Con
 	- Missing fields → flag as "pre-v5 page — route through `/verify` when touched"
 	- `verificationStatus: disputed` → include in high-priority `/verify --resolve` queue
 
+- **Persona health (v6.3)**: for every `type: persona` card in `20. Wiki/26. Personas/`
+	- `personaOf` must resolve to an existing entity page → missing/dangling = error
+	- `personaMaturity` ∈ seed/developing/established; body must contain `> [!warning] Simulation Boundary` and `## Accumulation Log`
+	- **Stale persona**: the `personaOf` entity's `source` list contains raw sources absent from the persona's `source` list → flag as "accumulation backlog"
+	- Quote Bank spot check: sample 1 quote per persona and grep it against the cited Raw Source `## Original Content` → mismatch = fabrication-level error
+
 ### Step 9: Core Context Freshness
 
 Read `Core Context.md` frontmatter `snapshot_date`. If §5 has mothership system files registered, compare `snapshot_date` with max `date modified` of those registered files.
