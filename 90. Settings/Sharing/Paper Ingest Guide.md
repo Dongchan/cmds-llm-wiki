@@ -167,6 +167,6 @@ provisional citekey 로 전부 동작한다 (§10). 인용 locator 는 페이지
 ## 참고
 
 - 스킴 전문 (유형별 12단 표): `90. Settings/Templates/12-Step Analysis Schemes.md`
-- 파이프라인 상세 (에이전트용): `.agents/skills/ingest/resources/paper-ingest.md`
+- 파이프라인 상세 (에이전트용): `90. Settings/Skills/paper-ingest.md`
 - 템플릿: `Template_Paper Hub` · `Template_Paper Analysis Note` · `Template_Atomization SPEC` · `Template_Scale Page`
 - 셋업 전반: `90. Settings/Sharing/Setup Guide.md`

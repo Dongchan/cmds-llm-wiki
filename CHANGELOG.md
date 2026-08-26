@@ -4,6 +4,12 @@
 
 ---
 
+## v1.11.1 — 2026-08-27 (Cross-vault 링크 형식 — advanced-uri 표준 + 폴백)
+
+- **`mainVaultRelated` 링크 형식 갱신** (CLAUDE.md·AGENTS.md 정의 2곳씩 + paper-ingest 스킬): 표준은 `obsidian://advanced-uri?vault=...&filepath=....md` (모선 볼트에 Advanced URI 플러그인 필요), 미설치 시 기존 `obsidian://open?vault=...&file=...` 폴백. 기존 open 형 링크는 계속 유효 — 마이그레이션 불요.
+- 배경: 모선 CMDS 시스템 파일 v4.10.2 의 cross-vault 상호참조 표준 (wikilink-rules §6) 을 킷에 이식. advanced-uri 는 정확한 파일 경로(filepath+.md)·헤딩/블록 타겟팅을 지원해 open 형보다 정밀하다.
+- **paper-ingest 리소스 위치 정리** (canonical 선반영분 동반 릴리스): `.agents/skills/ingest/resources/paper-ingest.md` → `90. Settings/Skills/paper-ingest.md` 이관 + 포인터 4곳 갱신 (`.claude/commands/ingest.md`, `.codex/commands/ingest.md`, `.agents/skills/ingest/SKILL.md`, `Paper Ingest Guide.md`).
+
 ## v1.11.0 — 2026-08-17 (Persona Layer — 실존 인물 perspective-taking 층)
 
 **신설 — `20. Wiki/26. Personas/` (v6.3)**:
