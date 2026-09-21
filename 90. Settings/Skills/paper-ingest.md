@@ -76,7 +76,7 @@ Abstract 로 논문의 주제를 파악하고 **Core Context §2 재활용 축 �
 	> [!question] Feeds Open Questions
 	> - [[RQ-{slug}]] — evidence **for** {가설} / 이 논문이 메우는 gap
 	```
-- **(Mode B) 모선 아이디어/draft → 논문** (단방향·메타데이터): `mainVaultRelated` 에 실재 확인된 `obsidian://open?vault={your-mothership-vault-name}&file=…` 2~5개. **모선에 기본 쓰기 금지 — 보고만.**
+- **(Mode B) 모선 아이디어/draft → 논문** (단방향·메타데이터): `mainVaultRelated` 에 실재 확인된 `obsidian://advanced-uri?vault={your-mothership-vault-name}&filepath=….md` 2~5개 (플러그인 미설치 시 `obsidian://open?vault=…&file=…` 폴백). **모선에 기본 쓰기 금지 — 보고만.**
 
 ---
 

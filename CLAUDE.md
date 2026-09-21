@@ -7,13 +7,13 @@ description: "Schema and harness document for the CMDS LLM Wiki vault. Defines t
 author:
   - "[[{your-name}]]"
 date created: 2026-04-10T21:30
-date modified: 2026-08-17
+date modified: 2026-08-27
 tags:
   - system
   - schema
   - llm-wiki
 status: active
-version: "1.11.0"
+version: "1.11.1"
 ---
 
 # CLAUDE.md — LLM Wiki Schema
@@ -236,7 +236,7 @@ Mothership pattern 예시: [cmds-system-files](https://github.com/johnfkoo951/cm
 > [!info] Variants
 > - **Standard Ingest** (기본): 단일 URL/파일/텍스트 → 1 Raw Source + 10~15 Wiki pages
 > - **Book Ingest (Progressive Stubs)**: 멀티 페이지 책·문서 사이트 (mdBook/VitePress/GitBook/Docusaurus/ReadTheDocs/Nextra, TOC 에 5+ 챕터) → 1 Book Index + N chapter stubs + 소수 Wiki (책·저자·앵커 개념). 사용자가 장을 읽을 때 해당 stub 을 "promote" (verbatim 삽입 + Wiki 컴파일 + `status: stub` → `completed`). 상세: [[Book Ingest Pattern]] + `.claude/commands/ingest.md` "Book Ingest Mode" 섹션.
-> - **Paper Ingest Mode (Academic Papers, v6.2)**: 논문(PDF/DOI/arXiv/Abstract+References) 자동 감지 → `.agents/skills/ingest/resources/paper-ingest.md` 리소스 로드 (12단 원자화, citekey 네이밍, RQ 연결, `p7_verify.py` 게이트). Standard/Book 와 공존, `/ingest` 단일 진입점. 사용자 매뉴얼: `90. Settings/Sharing/Paper Ingest Guide.md`.
+> - **Paper Ingest Mode (Academic Papers, v6.2)**: 논문(PDF/DOI/arXiv/Abstract+References) 자동 감지 → `90. Settings/Skills/paper-ingest.md` 리소스 로드 (12단 원자화, citekey 네이밍, RQ 연결, `p7_verify.py` 게이트). Standard/Book 와 공존, `/ingest` 단일 진입점. 사용자 매뉴얼: `90. Settings/Sharing/Paper Ingest Guide.md`.
 
 새 source가 `00. Inbox/`에 들어오면:
 
@@ -427,7 +427,7 @@ harness 정의 파일(`.claude/commands/*`, `.codex/commands/*`, `.agents/skills
 - `category`: Articles / Papers / Books / Transcripts / Clippings / AI Research
 - `status`: **(v2 신설)** `ingested` (기본) / `stub` (Book Ingest 미독서) / `reading` (독서 중) / `completed` (독서 완료 + Wiki 컴파일 완료). 표준 ingest 는 `ingested` 만 사용.
 - `collectionPurpose`: **(필수, v2 신설)** 사용자가 명시한 수집 목적 — 미래의 나에게 보내는 편지. 7 재활용 축 중 하나 이상. 예: `"PhD 연구 — AI readiness 측정 도구"`, `"컨설팅 deliverable — 기업 임원교육 사례"`
-- `mainVaultRelated`: **(v2 신설)** ingest 시 메인 볼트에서 검색된 유사 노트 2~5개 — `[노트명](obsidian://open?vault=...)` 클릭 가능 링크 (ingest Step 0-a 에서 stat 검증한 값만 사용)
+- `mainVaultRelated`: **(v2 신설, v1.11.1 형식 갱신)** ingest 시 메인 볼트에서 검색된 유사 노트 2~5개 — 표준은 advanced-uri: `[노트명](obsidian://advanced-uri?vault={your-mothership-vault-name}&filepath=URL_ENCODED_PATH.md)` (모선 볼트에 Advanced URI 플러그인 필요 · 미설치 시 `[노트명](obsidian://open?vault=...&file=PATH_WITHOUT_MD)` 폴백) (ingest Step 0-a 에서 stat 검증한 값만 사용)
 - `mainVaultCmds`: **(v2 신설)** 관련 CMDS 카테고리 — `"[[📚 601 Knowledge Management]]"` quoted wikilink (메인 볼트 기준이므로 이 볼트에서는 resolve 안 되지만 메타데이터로 보존)
 
 **Book Ingest 전용 키** (Raw Source chapter stub, `status: stub`):
@@ -441,7 +441,7 @@ harness 정의 파일(`.claude/commands/*`, `.codex/commands/*`, `.agents/skills
 - `related`: 관련 Wiki 페이지 링크
 - `confidence`: high / medium / low (정보 신뢰도)
 - `layer`: concepts / entities / guides / theory / method / scale (theory/method/scale = v6.2, 논문 승격 재사용 단위 — `21. Concepts` 내 layer 태그로 구분, 별도 폴더 없음. scale 페이지는 `measuredConstruct`·`itemCount` + `Template_Scale Page`)
-- `mainVaultRelated`: **(v2 신설)** 메인 볼트의 관련 에세이·MOC — `[노트명](obsidian://open?vault=...)` 클릭 가능 링크
+- `mainVaultRelated`: **(v2 신설, v1.11.1 형식 갱신)** 메인 볼트의 관련 에세이·MOC — `[노트명](obsidian://advanced-uri?vault=...&filepath=...md)` (플러그인 없으면 `obsidian://open` 폴백)
 - `mainVaultCmds`: **(v2 신설)** 연결될 CMDS 카테고리
 - `explored`: **(v4 신설)** Exploration Gate 상태. 새 Wiki 페이지 기본값은 `false`. 사용자가 직접 읽었거나 에이전트가 별도 검증 루프를 수행한 뒤에만 `true`.
 - `exploredBy`: **(v4 선택)** `explored: true` 로 바꾼 사람 또는 에이전트 이름
